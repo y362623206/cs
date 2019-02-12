@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>保重保险服务-后台管理系统</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black"> 
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="format-detection" content="telephone=no">
+  
+  <link rel="stylesheet" href="font/font-awesome-4.7.0/css/font-awesome.css" />
+  <link rel="stylesheet" href="layui/css/layui.css"  media="all">
+  <link rel="stylesheet" href="css/houtai.css"  />
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+  <div class="layui-header layui-back-deepgreen">
+    <div class="layui-logo" style="background:#fff"><a href="/home">保重信息平台</a></div>
+    <!-- 头部区域（可配合layui已有的水平导航） -->
+    <ul class="layui-nav layui-layout-left top-nav">
+      <li class="layui-nav-item layui-this"><a name="jcpz">基础配置</a></li>
+      <li class="layui-nav-item"><a name="cxpz">车险管理</a></li>
+      <li class="layui-nav-item"><a name="sxgl">寿险管理</a></li>
+      <li class="layui-nav-item"><a name="txpz">团险管理</a></li>
+      <li class="layui-nav-item"><a name="cwgl">财务管理</a></li>
+      <li class="layui-nav-item"><a name="app">移动端</a></li>
+    </ul>
+    <ul class="layui-nav layui-layout-right top-btn">
+    	<li onclick="toggleNav();" title="点击可伸缩侧边栏"><a><i class="fa fa-arrows-h"></i>侧边栏伸缩</a></li>
+    </ul>
+    <ul class="layui-nav layui-layout-right">
+      <li class="layui-nav-item">
+        <a href="javascript:;">
+          <img src="images/user.jpg" class="layui-nav-img">
+                    程文振
+        </a>
+        <dl class="layui-nav-child" style="color:#000;padding-left:5px">
+          <dd><span>ID号:</span><span id="id_bianhao"></span></dd>
+          <dd><span>机构:</span><span id="jigou"></span></dd>
+          <dd><span>部门:</span><span id="bumen"></span></dd>
+          <dd><span>角色:</span><span id="jiaoshe"></span></dd>
+        </dl>
+      </li>
+      <li class="layui-nav-item"><a href="">退了</a></li>
+    </ul>
+  </div>   
+  
+<div class="leftNav">
+	<!--侧边导航-->
+	<ul style="border-top:1px solid rgba(204, 204, 204, 0.2);">		
+		<li>
+			<a class="clearfix" href="javascript:;"><i class="fa fa-area-chart"></i>公共配置<i class="layui-icon right">&#xe61a;</i></a>
+			<dl class="submenu">
+				<dd><a class="clearfix">数据字典</a></dd>
+				<dd><a class="clearfix">保险公司</a></dd>
+				<dd><a class="clearfix">权限字典</a></dd>
+			</dl>
+		</li>
+		<li>
+			<a class="clearfix" href="javascript:;"><i class="fa fa-bar-chart-o"></i>组织构架管理<i class="layui-icon right">&#xe61a;</i></a>
+			<dl class="submenu">
+				<dd><a class="clearfix">保重机构管理</a></dd>
+				<dd><a class="clearfix">保险公司管理</a></dd>
+			</dl>
+		</li>
+		<li>
+			<a class="clearfix" href="javascript:;"><i class="fa fa-line-chart"></i>操作员管理<i class="layui-icon right">&#xe61a;</i></a>
+			<dl class="submenu">
+				<dd><a class="clearfix">操作员定义</a></dd>
+				<dd><a class="clearfix">项目功能分配</a></dd>
+				<dd><a class="clearfix">保重机构分配</a></dd>
+				<dd><a class="clearfix">保险公司分配</a></dd>
+			</dl>
+		</li>
+	</ul>
+</div>
+	<!--侧边导航-->
+  
+  <!-- 表格主界面开始-->
+  <div class="layui-body" style="bottom: 0;">
+	 
+  </div>
+  <!-- 表格主界面结束-->
+  
+</div>
+<script src="js/jquery.js"></script>
+<script src="layui/layui.js"></script>
+<script>
+    layui.use('element', function(){
+	  var element = layui.element;
+	  
+	});
+	var $=layui.$;
+	$(document).ready(function(){
+			
+		//一级子菜单（点击切换右侧图标显示，并显示下面的二级菜单，关闭其他二级菜单）
+		$("li>a").on('click',function(e){
+			if($(this).text().indexOf("首页")!=-1){
+				$(this).addClass("active");
+				$(this).next().slideToggle();
+				$(this).parents("li").siblings("li").find("dl").slideUp();
+			}else{
+				$(this).next().slideToggle();
+				$(this).parents("li").siblings("li").find("dl").slideUp();
+			}
+		})
+		//二级子菜单（显示选中样式，移除其他选中状态，若下面还有三级菜单则切换三级菜单的显示状态）
+		$("li>dl>dd>a").on('click',function(e){	        
+			if($(this).next("dl").length!=0){
+				$(this).next("dl").slideToggle();
+			}else{
+				$("li a").removeClass("active");
+				$(this).addClass("active");
+			}
+		})	
+		//三级子菜单
+		$("dd>dl>dd>a").on('click',function(e){
+			$("li a").removeClass("active");
+			$(this).addClass("active");
+		})
+		//鼠标经过显示用户信息
+		$(".userInfo").on('mouseenter',function(){
+			$(".userInfo .nav-child").slideDown();
+		})
+		$(".userInfo").on('mouseleave',function(){
+			$(".userInfo .nav-child").slideUp();
+		})
+		
+	})
+	
+	//侧边栏伸缩
+	function toggleNav(){
+		$(".leftNav").animate({width:'toggle'},"slow");
+		$(".layui-body").toggleClass("all-body");	
+	}
+</script>
+</body>
+</html>
